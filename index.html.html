@@ -1,0 +1,796 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>i420tv</title>
+
+<link rel="shortcut icon" href="assets/icons/rose4.png" type="image/x-icon">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --text:#ffffff;
+    --red:#ff0000;
+}
+
+html{
+    font-size:clamp(9px,.6vw,12px);
+}
+
+body{
+    width:100vw;
+    min-height:100vh;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background:#000;
+    font-family:monospace;
+    color:var(--text);
+}
+
+#myVideo{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-2;
+    filter:saturate(1.1) brightness(.75);
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,20,.2);
+    z-index:-1;
+}
+
+.main-layout{
+    position:relative;
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-bottom:18vh;
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes glow{
+    from{
+        text-shadow:0 0 5px rgba(255,255,255,.2);
+    }
+
+    to{
+        text-shadow:
+        0 0 10px rgba(255,255,255,.6),
+        0 0 20px rgba(255,255,255,.3);
+    }
+}
+
+/* VIEWERS */
+
+.viewers-counter{
+    position:absolute;
+    top:2vh;
+    right:2vw;
+
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+
+    z-index:10;
+
+    font-size:clamp(.8rem,.8vw,1rem);
+}
+
+.eye-icon{
+    width:clamp(16px,1.2vw,22px);
+}
+
+/* PORTFOLIO */
+
+.portfolio{
+    position:absolute;
+
+    top:19vh;
+    left:3vw;
+
+    width:36vw;
+    max-width:850px;
+
+    z-index:5;
+
+    animation:fadeUp 1s ease forwards;
+}
+
+.portfolio-title{
+    font-size:clamp(1.5rem,2vw,3rem);
+    margin-bottom:2vh;
+}
+
+.portfolio-text{
+    font-size:clamp(.8rem,.8vw,1rem);
+    line-height:1.8;
+    margin-bottom:2vh;
+}
+
+.portfolio-list{
+    list-style:none;
+
+    display:flex;
+    flex-direction:column;
+    gap:1.2vh;
+}
+
+.portfolio-list li{
+    font-size:clamp(.75rem,.8vw,1rem);
+    line-height:1.8;
+}
+
+.portfolio-note{
+    margin-top:4vh;
+    opacity:.8;
+
+    font-size:clamp(.7rem,.75vw,.95rem);
+}
+
+/* CENTER */
+
+.center-content{
+    position:absolute;
+    left:45%;
+    top:42%;
+    transform:translate(-50%,-50%) scale(.92);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2vh;
+
+    z-index:5;
+
+    opacity:0;
+    animation:fadeUp 1.2s ease forwards;
+    animation-delay:.2s;
+}
+
+.news,
+.news2{
+    text-align:center;
+    font-size:clamp(.8rem,.8vw,1rem);
+}
+
+.news a{
+    color:var(--red);
+    text-decoration:none;
+    font-style:italic;
+}
+
+.news2 a{
+    color:white;
+    text-decoration:none;
+    font-style:italic;
+}
+
+.social-links{
+    display:flex;
+    align-items:center;
+    gap:2vw;
+}
+
+.social-links img{
+    width:clamp(26px,2vw,42px);
+
+    transition:
+    transform .25s ease,
+    opacity .25s ease;
+}
+
+.social-links img:hover{
+    transform:scale(1.12);
+}
+
+.brand-box{
+    text-align:center;
+}
+
+.brand-header{
+    font-size:clamp(2rem,3vw,4rem);
+    animation:glow 3s ease-in-out infinite alternate;
+}
+
+.brand-sub{
+    color:var(--red);
+    font-size:clamp(.9rem,1vw,1.2rem);
+}
+
+/* KNOWLEDGE */
+
+.knowledge-block{
+    position:absolute;
+    top:42%;
+    right:2vw;
+
+    transform:translateY(-50%) scale(.92);
+
+    width:14vw;
+    min-width:180px;
+    max-width:260px;
+
+    padding:1.5rem;
+
+    background:rgba(0,0,0,.15);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    border-radius:1.5rem;
+
+    backdrop-filter:blur(15px);
+
+    z-index:5;
+
+    opacity:0;
+    animation:fadeUp 1.4s ease forwards;
+    animation-delay:.4s;
+
+    transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.knowledge-block:hover{
+    box-shadow:0 0 25px rgba(255,255,255,.08);
+}
+
+.knowledge-title{
+    margin-bottom:1.2rem;
+    font-size:clamp(1rem,1vw,1.3rem);
+    letter-spacing:.2rem;
+}
+
+.knowledge-list{
+    list-style:none;
+
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+}
+
+.knowledge-list li{
+    display:flex;
+    align-items:center;
+    gap:.8rem;
+
+    font-size:clamp(.8rem,.8vw,1rem);
+}
+
+.knowledge-list img{
+    width:clamp(18px,1.2vw,24px);
+}
+
+/* BAN WALL */
+
+.ban-wall{
+    position:fixed;
+    left:0;
+    bottom:12vh;
+    width:100vw;
+    overflow:hidden;
+    padding:1rem 0;
+    z-index:15;
+}
+
+.ban-title{
+    width:100%;
+    text-align:center;
+    color:var(--red);
+    margin-bottom:1.5rem;
+    font-size:clamp(1.3rem,2vw,2.3rem);
+}
+
+.ban-track{
+    display:flex;
+    align-items:center;
+    gap:1.2rem;
+    width:max-content;
+    min-width:100%;
+    animation:scroll 40s linear infinite;
+    padding:0 2rem;
+}
+
+.ban-card{
+    position:relative;
+    min-width:clamp(220px,16vw,300px);
+    padding:1rem;
+    border-radius:1rem;
+    background:rgba(0,0,20,.6);
+    border:1px solid var(--red);
+    backdrop-filter:blur(12px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    backdrop-filter:blur(12px);
+    transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+    opacity:0;
+    animation:fadeUp .8s ease forwards;
+    z-index:1;
+    cursor:pointer;
+    text-decoration:none;
+    color:white;
+}
+
+.ban-card:hover{
+    transform:scale(1.05);
+
+    box-shadow:0 0 15px rgba(255,0,0,.5);
+
+    z-index:20;
+}
+
+.ban-card h3{
+    color:var(--red);
+    margin-bottom:.5rem;
+}
+
+.ban-card p{
+    font-size:.8rem;
+    margin-bottom:.5rem;
+}
+
+.ban-card span{
+    opacity:.7;
+    font-size:.7rem;
+    color: #fa6563;
+}
+
+@keyframes scroll{
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-50%);
+    }
+}
+
+/* AUDIO */
+
+.audio-player{
+    position:fixed;
+    left:50%;
+    bottom:2vh;
+    transform:translateX(-50%);
+    z-index:100;
+    width:26vw;
+    min-width:280px;
+    max-width:420px;
+
+    display:flex;
+    align-items:center;
+    gap:1rem;
+
+    padding:.8rem 1rem;
+
+    border-radius:1.2rem;
+
+    background:rgba(0,0,0,.45);
+
+    backdrop-filter:blur(12px);
+
+    transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.audio-player:hover{
+    box-shadow:0 0 20px rgba(255,255,255,.08);
+}
+
+.cover{
+    width:55px;
+    height:55px;
+
+    border-radius:.7rem;
+}
+
+.audio-info{
+    flex:1;
+}
+
+.track-title{
+    margin-bottom:.7rem;
+    font-size:.9rem;
+}
+
+.controls{
+    display:flex;
+    align-items:center;
+    gap:.7rem;
+}
+
+.play-btn{
+    background:none;
+    border:none;
+    color:white;
+    cursor:pointer;
+}
+
+.progress{
+    flex:1;
+    height:4px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.2);
+
+    overflow:hidden;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:white;
+}
+
+.time{
+    font-size:.7rem;
+}
+
+/* MOBILE */
+
+@media (max-width:900px){
+
+    body{
+        overflow-y:auto;
+        overflow-x:hidden;
+    }
+
+    .main-layout{
+        min-height:180vh;
+    }
+
+    .portfolio{
+        width:90vw;
+        left:5vw;
+        top:6vh;
+    }
+
+    .center-content{
+        top:58vh;
+    }
+
+    .knowledge-block{
+        position:relative;
+
+        top:auto;
+        right:auto;
+
+        transform:none;
+
+        width:90vw;
+        max-width:none;
+
+        margin:0 auto;
+
+        margin-top:90vh;
+    }
+
+    .social-links{
+        gap:8vw;
+    }
+
+    .ban-wall{
+        bottom:14vh;
+        width:100vw;
+    }
+
+    .audio-player{
+        width:90vw;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<video autoplay muted loop id="myVideo">
+    <source src="18b7ac41-5958-443e-b06f-1a2c0c08a2cd.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<div class="main-layout">
+
+<div class="viewers-counter">
+    <img src="assets/icons/eye.png" alt="Eye" class="eye-icon">
+    <span id="viewerCount">158</span>
+</div>
+
+<section class="portfolio">
+
+<h2 class="portfolio-title">(>~,~)>whyyouhereman?<(@,@<)</h2>
+
+<p class="portfolio-text">
+i420tv — a digital creator and developer with a passion for design and automation.<br><br>
+I work on a variety of creative and technical projects, blending visuals with functionality.
+</p>
+
+<ul class="portfolio-list">
+<li>🎨 <strong>Web Design:</strong> creating clean and modern websites with custom UI/UX.</li>
+
+<li>⚙️ <strong>Macro Development:</strong> writing automation macros and utility scripts.</li>
+
+<li>🎨 <strong>Adobe Photoshop:</strong> creating visual content, banners and profile art.</li>
+
+<li>🧱 <strong>3D Modeling:</strong> models for games and Steam Workshop projects.</li>
+
+<li>🧩 <strong>Steam Profile Design:</strong> aesthetic profile customization.</li>
+
+<li>🖥 <strong>Server Development:</strong> MTA, GTA V, CS and MMORPG systems.</li>
+
+<li>🗄️ <strong>Database Management:</strong> SQL and NoSQL systems.</li>
+
+<li>🎮 <strong>Gaming Experience:</strong> 10,000+ hours in Rust and Apex Legends.</li>
+</ul>
+
+<p class="portfolio-note">
+⚠️ I do not create or distribute malicious software.<br>
+My focus is on creative, safe and legitimate development.
+</p>
+
+</section>
+
+<div class="center-content">
+
+<div>
+<div class="news">
+<a href="https://t.me/grimac3" target="_blank"><b>Andrew i420tv</b></a>
+</div>
+
+<div class="news2">
+<a href="https://t.me/grimac3" target="_blank">contacts for offers/orders</a>
+</div>
+</div>
+
+<div class="social-links">
+<a href="https://steamcommunity.com/id/i420420420/" target="_blank">
+<img src="assets/icons/steam.png" alt="Steam">
+</a>
+
+<a href="https://twitch.tv/i420ttv" target="_blank">
+<img src="assets/icons/twitch.png" alt="Twitch">
+</a>
+
+<a href="https://t.me/grimac3" target="_blank">
+<img src="assets/icons/discord.png" alt="Discord">
+</a>
+</div>
+
+<div class="brand-box">
+<h1 class="brand-header">i420tv</h1>
+<div class="brand-sub">loveisblind</div>
+</div>
+
+</div>
+
+<div class="knowledge-block">
+
+<h3 class="knowledge-title">Knowledge</h3>
+
+<ul class="knowledge-list">
+<li><img src="assets/icons/vue.png"> Vue</li>
+<li><img src="assets/icons/js.png"> JavaScript</li>
+<li><img src="assets/icons/csharp.png"> C#</li>
+<li><img src="assets/icons/html.png"> HTML</li>
+<li><img src="assets/icons/react.png"> React</li>
+</ul>
+
+</div>
+
+<section class="ban-wall">
+
+<h2 class="ban-title">Wall of the Fallen by i420420420</h2>
+
+<div class="ban-track" id="banTrack"></div>
+
+</section>
+
+<div class="audio-player">
+
+<img src="assets/icons/ed190e8e-62f0-4cd0-8984-5760d9195af0.png" class="cover">
+
+<div class="audio-info">
+
+<h3 class="track-title">Gang Unit</h3>
+
+<div class="controls">
+<button id="playBtn" class="play-btn">❚❚</button>
+
+<div class="progress">
+<div id="progressBar" class="progress-bar"></div>
+</div>
+
+<span id="currentTime" class="time">0:00</span>
+/
+<span id="duration" class="time">0:00</span>
+
+</div>
+</div>
+
+<audio id="player" src="assets/audio/mirrors2.mp3"></audio>
+
+</div>
+
+</div>
+
+<script>
+const counter=document.getElementById('viewerCount');
+
+setInterval(()=>{
+    let current=parseInt(counter.innerText);
+
+    current += Math.floor(Math.random()*3);
+
+    counter.innerText=current;
+},2000);
+</script>
+
+<script>
+const player=document.getElementById('player');
+const playBtn=document.getElementById('playBtn');
+const progressBar=document.getElementById('progressBar');
+const currentTimeElem=document.getElementById('currentTime');
+const durationElem=document.getElementById('duration');
+
+function formatTime(seconds){
+    const m=Math.floor(seconds/60);
+    const s=Math.floor(seconds%60);
+
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+playBtn.addEventListener('click',()=>{
+
+    if(player.paused){
+        player.play();
+        playBtn.textContent='❚❚';
+    }
+
+    else{
+        player.pause();
+        playBtn.textContent='▶';
+    }
+});
+
+player.addEventListener('timeupdate',()=>{
+
+    const progress=(player.currentTime/player.duration)*100;
+
+    progressBar.style.width=progress + '%';
+
+    currentTimeElem.textContent=formatTime(player.currentTime);
+});
+
+player.addEventListener('loadedmetadata',()=>{
+
+    durationElem.textContent=formatTime(player.duration);
+});
+
+window.addEventListener('DOMContentLoaded',()=>{
+
+    player.volume=.8;
+
+    player.play().catch(()=>{});
+});
+</script>
+
+<script>
+const bannedPlayers=[
+{name:"Pusi4ka",steamid:"76561199859475468",bannedAt:"2025-11-18",link:"https://steamcommunity.com/profiles/76561199859475468"},
+{name:"ＣＨＩＮＥＳＥ",steamid:"76561199132589095",bannedAt:"2025-06-27",link:"https://steamcommunity.com/profiles/76561199132589095"},
+{name:"P A N D A",steamid:"76561199871085209",bannedAt:"2025-09-12",link:"https://steamcommunity.com/profiles/76561199871085209"},
+{name:"Pusi4ka",steamid:"76561198453260196",bannedAt:"2025-11-18",link:"https://steamcommunity.com/profiles/76561198453260196"},
+{name:"JFK got Boltied",steamid:"76561199698136504",bannedAt:"2026-01-31",link:"https://steamcommunity.com/profiles/76561199698136504"},
+{name:"HV | Ak-47",steamid:"76561199409074308",bannedAt:"2026-04-13",link:"https://steamcommunity.com/profiles/76561199409074308"},
+{name:"qwertwis99",steamid:"76561199799549200",bannedAt:"2025-01-30",link:"https://steamcommunity.com/profiles/76561199799549200"},
+{name:"FORS I Gion",steamid:"76561199890391233",bannedAt:"2025-11-15",link:"https://steamcommunity.com/profiles/76561199890391233"},
+{name:"123",steamid:"76561198769484265",bannedAt:"2025-11-22",link:"https://steamcommunity.com/profiles/76561198769484265"},
+{name:"ＳムY么乙ツ",steamid:"76561198766100176",bannedAt:"2025-12-10",link:"https://steamcommunity.com/profiles/76561198766100176"},
+{name:"LeninLive",steamid:"76561199856216693",bannedAt:"2026-02-15",link:"https://steamcommunity.com/profiles/76561199856216693"},
+{name:"melee owner",steamid:"76561198753522641",bannedAt:"2026-04-16",link:"https://steamcommunity.com/profiles/76561198753522641"},
+{name:"Traiz",steamid:"76561199649938161",bannedAt:"2025-09-11",link:"https://steamcommunity.com/profiles/76561199649938161"},
+{name:"Yort",steamid:"76561198752888438",bannedAt:"2026-01-22",link:"https://steamcommunity.com/profiles/76561198752888438"},
+{name:"123",steamid:"76561198743599731",bannedAt:"2026-02-25",link:"https://steamcommunity.com/profiles/76561198743599731"},
+{name:"Bad boy",steamid:"76561198770769366",bannedAt:"2026-03-20",link:"https://steamcommunity.com/profiles/76561198770769366"},
+{name:"TyTI",steamid:"76561198247630956",bannedAt:"2026-04-25",link:"https://steamcommunity.com/profiles/76561198247630956"},
+{name:"тізбекті ит",steamid:"76561198709782153",bannedAt:"2026-05-04",link:"https://steamcommunity.com/profiles/76561198709782153"},
+{name:"yayayaya",steamid:"76561199409898242",bannedAt:"2026-01-24",link:"https://steamcommunity.com/profiles/76561199409898242"},
+{name:"zeen",steamid:"76561199878381925",bannedAt:"2026-01-07",link:"https://steamcommunity.com/profiles/76561199878381925"},
+{name:"hone",steamid:"76561198886537979",bannedAt:"2025-02-27",link:"https://steamcommunity.com/profiles/76561198886537979"},
+{name:"fullfocus фигурка",steamid:"76561199871370851",bannedAt:"2025-07-16",link:"https://steamcommunity.com/profiles/76561199871370851"},
+{name:"322 I NEKO",steamid:"76561198764661130",bannedAt:"2026-05-22",link:"https://steamcommunity.com/profiles/76561198764661130"},
+{name:"FORS I KAIZA",steamid:"76561198979977389",bannedAt:"2026-02-07",link:"https://steamcommunity.com/profiles/76561198979977389"},
+{name:"xm",steamid:"76561199065848752",bannedAt:"2025-12-09",link:"https://steamcommunity.com/profiles/76561199065848752"},
+{name:"mersace",steamid:"76561199780749164",bannedAt:"2026-04-06",link:"https://steamcommunity.com/profiles/76561199780749164"},
+{name:"kampfochse2.0 ",steamid:"76561198850397599",bannedAt:"2026-05-13",link:"https://steamcommunity.com/profiles/76561198850397599"},
+{name:"rtx 4050",steamid:"76561198704581373",bannedAt:"2026-05-13",link:"https://steamcommunity.com/profiles/76561198704581373"},
+{name:"werlldy",steamid:"76561198703424277",bannedAt:"2026-05-16",link:"https://steamcommunity.com/profiles/76561198703424277"},
+{name:"Donald pump",steamid:"76561199409672094",bannedAt:"2026-02-15",link:"https://steamcommunity.com/profiles/76561199409672094"}
+];
+
+function timeSince(date){
+
+    const seconds=Math.floor((new Date()-new Date(date))/1000);
+
+    const intervals={
+        year:31536000,
+        month:2592000,
+        day:86400,
+        hour:3600,
+        minute:60
+    };
+
+    for(let key in intervals){
+
+        const value=Math.floor(seconds/intervals[key]);
+
+        if(value>1){
+            return value + " " + key + "s ago";
+        }
+    }
+
+    return "just now";
+}
+
+const track=document.getElementById("banTrack");
+
+function createCards(){
+
+    bannedPlayers.forEach((p,index)=>{
+
+        const card=document.createElement("a");
+
+        card.className="ban-card";
+        card.href=p.link;
+        card.target="_blank";
+
+        card.style.animationDelay=`${index * .08}s`;
+
+        card.innerHTML=`
+        <h3>${p.name}</h3>
+        <p>ID: ${p.steamid}</p>
+        <span>${timeSince(p.bannedAt)}</span>
+        `;
+
+        track.appendChild(card);
+    });
+
+    track.innerHTML += track.innerHTML;
+}
+
+createCards();
+</script>
+
+</body>
+</html>
