@@ -9,6 +9,10 @@
 
 <style>
 *{
+    cursor:url("assets/others/cursor.png"), auto !important;
+}
+ 
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
@@ -60,6 +64,46 @@ body{
     padding-bottom:18vh;
 }
 
+.avatar-wrap{
+    position:absolute;
+    width:90px;
+    height:90px;
+    top:50%;
+     left:0;
+}
+
+/* аватар снизу */
+.avatar{
+    position:absolute;
+    top:270%;
+    left:12%;
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    z-index:1;
+}
+
+/* рамка сверху */
+.frame{
+    position:absolute;
+    top:265%;
+    left:5%;
+    width:118%;
+    height:118;
+    z-index:2;
+    pointer-events:none;
+
+    /* ключевой "живой" glow */
+    filter:
+        drop-shadow(0 0 6px rgba(40, 6, 192, 0.35))
+        drop-shadow(0 0 10px rgba(0, 255, 140, 0.25))
+        drop-shadow(0 0 18px rgba(0, 0, 0, 0.6));
+
+    /* делает эффект “глубже” */
+    mix-blend-mode: screen;
+    opacity:0.95;
+}
 /* ANIMATIONS */
 
 @keyframes fadeUp{
@@ -155,9 +199,11 @@ body{
 
 /* CENTER */
 
+
+
 .center-content{
     position:absolute;
-    left:45%;
+    left:40%;
     top:42%;
     transform:translate(-50%,-50%) scale(.92);
 
@@ -222,6 +268,239 @@ body{
     color:var(--red);
     font-size:clamp(.9rem,1vw,1.2rem);
 }
+
+
+/* IDENTITY CARD */
+
+.identity-card{
+
+    margin-top:2vh;
+
+    width:26vw;
+    min-width:340px;
+    max-width:480px;
+
+    padding:1.4rem;
+
+    border-radius:2rem;
+
+    background:rgba(0,0,0,.28);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+    box-shadow:
+    0 0 35px rgba(255,0,0,.05);
+
+    transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+.identity-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+    0 0 45px rgba(255,0,0,.12);
+}
+
+.identity-top{
+
+    display:flex;
+    align-items:center;
+
+    gap:1.2rem;
+}
+
+.avatar-wrap{
+
+    position:relative;
+}
+
+.identity-avatar{
+
+    width:88px;
+    height:88px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 0 25px rgba(255,0,0,.15);
+}
+
+.status-dot{
+
+    position:absolute;
+
+    right:4px;
+    bottom:4px;
+
+    width:16px;
+    height:16px;
+
+    border-radius:50%;
+
+    background:#00ff66;
+
+    border:2px solid black;
+
+    animation:pulse 1.5s infinite alternate;
+}
+
+.identity-name{
+
+    font-size:1.5rem;
+    font-weight:700;
+
+    margin-bottom:.4rem;
+}
+
+.identity-status{
+
+    opacity:.7;
+
+    font-size:.9rem;
+
+    margin-bottom:.9rem;
+}
+
+.identity-badges{
+
+    display:flex;
+    gap:.6rem;
+    flex-wrap:wrap;
+}
+
+.identity-badges span{
+
+    padding:.4rem .8rem;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    font-size:.75rem;
+
+    color:#ff4d4d;
+}
+
+.discord-mini{
+
+    margin-top:- 4.9rem;
+
+    display:flex;
+    align-items:center;
+
+    gap:1rem;
+
+    padding:1rem;
+
+    border-radius:1.4rem;
+
+    background:rgba(255,255,255,.03);
+
+    border:1px solid rgba(255,255,255,.05);
+}
+
+.discord-avatar-wrap{
+    position:relative;
+    
+    width:52px;
+    height:52px;
+}
+
+.discord-avatar{
+
+    width:52px;
+    height:52px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+}
+
+.discord-status{
+
+    position:relative;
+
+    right:2vh;
+    bottom:-17px;
+
+    width:14px;
+    height:14px;
+
+    border-radius:50%;
+
+
+    border:2px solid #111;
+
+}
+
+.discord-text{
+    font-size:.95rem;
+    position:relative;
+    top:10px;
+
+}
+
+.discord-user{
+
+    font-size:.92rem;
+
+    margin-bottom:.35rem;
+}
+
+.discord-activity{
+
+    font-size:.75rem;
+
+    opacity:.6;
+}
+
+.discord-tag{
+
+    padding:.45rem .8rem;
+
+    border-radius:992px;
+
+    background:rgba(255,255,255,.05);
+
+    color:#f8f8f8;
+
+    font-size:1.05rem;
+
+     animation:glow 9s ease-in-out infinite alternate;
+
+}
+
+.discord-tag img{
+
+    width:clamp(9px,1vw,12px);
+
+    transition:
+    transform .25s ease,
+
+}
+
+@keyframes pulse{
+
+    0%{
+        box-shadow:0 0 5px #00ff66;
+    }
+
+    100%{
+        box-shadow:0 0 18px #00ff66;
+    }
+}
+
 
 /* KNOWLEDGE */
 
@@ -561,6 +840,11 @@ My focus is on creative, safe and legitimate development.
 
 </section>
 
+<div class="avatar-wrap">
+    <img class="avatar" src="assets/others/avatar.webp">
+    <img class="frame" src="assets/others/frame.png">
+</div>
+
 <div class="center-content">
 
 <div>
@@ -591,6 +875,35 @@ My focus is on creative, safe and legitimate development.
 <h1 class="brand-header">i420tv</h1>
 <div class="brand-sub">loveisblind</div>
 </div>
+
+
+
+
+    <div class="discord-mini">
+
+        <img src="assets/icons/avatar2.png" class="discord-avatar">
+        <img src="assets/icons/status.png" class="discord-status">
+
+        <div class="discord-text">
+  https://rustplusweb.io - for smarties
+
+            <div class="discord-user">
+                
+            </div>
+
+            <div class="discord-activity">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                        
+            </div>
+
+        </div>
+
+        <div class="discord-tag">
+            <img src="assets/icons/lightning.png" alt="lightning">
+            GBID
+        </div>
+
+    </div>
+
 
 </div>
 
@@ -791,6 +1104,38 @@ function createCards(){
 
 createCards();
 </script>
+<script>
+const text = "i420tv - love is blind"
+let i = 0;
+let forward = true;
 
+setInterval(() => {
+    document.title = text.substring(0, i);
+
+    if (forward) {
+        i++;
+        if (i > text.length) forward = false;
+    } else {
+        i--;
+        if (i < 0) forward = true;
+    }
+}, 200);
+</script>
+<audio id="clickSound" preload="auto">
+    <source src="click.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const sound = document.getElementById("clickSound");
+
+sound.volume = 0.2; // от 0.0 до 1.0
+
+document.querySelectorAll("button, a").forEach(el => {
+    el.addEventListener("click", () => {
+        sound.currentTime = 0;
+        sound.play();
+    });
+});
+</script>
 </body>
 </html>
