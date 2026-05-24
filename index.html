@@ -69,7 +69,7 @@ body{
     width:90px;
     height:90px;
     top:50%;
-     left:0;
+     left:-2%;
 }
 
 /* аватар снизу */
@@ -203,7 +203,7 @@ body{
 
 .center-content{
     position:absolute;
-    left:40%;
+    left:36%;
     top:42%;
     transform:translate(-50%,-50%) scale(.92);
 
@@ -262,6 +262,7 @@ body{
 .brand-header{
     font-size:clamp(2rem,3vw,4rem);
     animation:glow 3s ease-in-out infinite alternate;
+    background: url("assets/others/red.gif") center center / cover no-repeat;
 }
 
 .brand-sub{
@@ -403,18 +404,34 @@ body{
 
     padding:1rem;
 
-    border-radius:1.4rem;
+    border-radius:1.2rem;
 
     background:rgba(255,255,255,.03);
 
     border:1px solid rgba(255,255,255,.05);
 }
+.badges {
+    display: flex;
+    align-items: center;
+
+    gap: 2px; /* расстояние между иконками */
+
+    margin-left: -29px; /* сдвиг левее */
+    
+    margin-bottom: 30px;
+
+    position:relative
+    
+    
+    
+}
 
 .discord-avatar-wrap{
-    position:relative;
+    position:absolute;
     
-    width:52px;
-    height:52px;
+    width:60px;
+    height:60px;
+    left:1vh;
 }
 
 .discord-avatar{
@@ -447,7 +464,14 @@ body{
 .discord-text{
     font-size:.95rem;
     position:relative;
-    top:10px;
+    top:16px;
+    right: 8vh;
+
+}
+
+.discord-text a{
+    color: white;
+    text-decoration: none;
 
 }
 
@@ -470,6 +494,7 @@ body{
     padding:.45rem .8rem;
 
     border-radius:992px;
+        margin-top: 50px;
 
     background:rgba(255,255,255,.05);
 
@@ -478,6 +503,7 @@ body{
     font-size:1.05rem;
 
      animation:glow 9s ease-in-out infinite alternate;
+         animation:glow 15s ease-in-out infinite alternate;
 
 }
 
@@ -487,6 +513,13 @@ body{
 
     transition:
     transform .25s ease,
+
+}
+
+.discord-tag a{
+
+   text-decoration: none;
+   color:#ffffff;
 
 }
 
@@ -828,7 +861,7 @@ I work on a variety of creative and technical projects, blending visuals with fu
 
 <li>🖥 <strong>Server Development:</strong> MTA, GTA V, CS and MMORPG systems.</li>
 
-<li>🗄️ <strong>Database Management:</strong> SQL and NoSQL systems.</li>
+<li>🗄️ <strong>Database Management:</strong> SQL and NodeSQL systems.</li>
 
 <li>🎮 <strong>Gaming Experience:</strong> 10,000+ hours in Rust and Apex Legends.</li>
 </ul>
@@ -880,12 +913,22 @@ My focus is on creative, safe and legitimate development.
 
 
     <div class="discord-mini">
-
+        <img src="assets/others/static.png" class="discord-avatar-wrap">
         <img src="assets/icons/avatar2.png" class="discord-avatar">
         <img src="assets/icons/status.png" class="discord-status">
 
+<div class="badges">
+    <img src="assets/icons/boost.png" alt="discord-avatar" width="16" height="16">
+    <img src="assets/icons/nitro.png" alt="discord-avatar" width="16" height="16">
+    <img src="assets/icons/hype.png" alt="discord-avatar" width="16" height="16">
+    <img src="assets/icons/name.png" alt="discord-avatar" width="16" height="16">
+    <img src="assets/icons/leaf.png" alt="discord-avatar" width="16" height="16">
+    <img src="assets/icons/royal.png" alt="discord-avatar" width="16" height="16">
+    <img src="assets/icons/orb.png" alt="discord-avatar" width="16" height="16">    
+</div>
+
         <div class="discord-text">
-  https://rustplusweb.io - for smarties
+   <a href="https://rustplusweb.io" target="_blank">https://rustplusweb.io for smarties</a>
 
             <div class="discord-user">
                 
@@ -899,7 +942,7 @@ My focus is on creative, safe and legitimate development.
 
         <div class="discord-tag">
             <img src="assets/icons/lightning.png" alt="lightning">
-            GBID
+           <a href="https://discord.gg/pDZGU5DxyH" target="_blank">GBID</a> 
         </div>
 
     </div>
@@ -931,11 +974,11 @@ My focus is on creative, safe and legitimate development.
 
 <div class="audio-player">
 
-<img src="assets/icons/ed190e8e-62f0-4cd0-8984-5760d9195af0.png" class="cover">
+<img src="assets/icons/real.png" class="cover">
 
 <div class="audio-info">
 
-<h3 class="track-title">Gang Unit</h3>
+<h3 class="track-title">Aminé - REEL IT IN</h3>
 
 <div class="controls">
 <button id="playBtn" class="play-btn">❚❚</button>
@@ -951,7 +994,7 @@ My focus is on creative, safe and legitimate development.
 </div>
 </div>
 
-<audio id="player" src="assets/audio/mirrors2.mp3"></audio>
+<audio id="player" src="assets/audio/real.mp3"></audio>
 
 </div>
 
